@@ -4,10 +4,8 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 
-// 🔐 charger env EN PREMIER
 dotenv.config();
 
-// test
 console.log("Server starting...");
 
 // connexion MongoDB
@@ -15,14 +13,13 @@ connectDB();
 
 const app = express();
 
-// 🔥 middlewares essentiels
 app.use(cors({
-  origin: "http://localhost:5173", // adapte si React autre port
+  origin: "http://localhost:5173",
   credentials: true
 }));
 
 app.use(express.json());
-app.use(cookieParser()); // 🔥 IMPORTANT POUR REFRESH TOKEN
+app.use(cookieParser());
 
 // routes
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -37,9 +34,5 @@ app.get("/", (req, res) => {
   res.send("API MyGrowth Hub is running");
 });
 
-// port
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ❗ IMPORTANT: export au lieu de listen
+module.exports = app;
